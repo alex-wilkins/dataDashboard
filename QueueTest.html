@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>C3 Chart Test </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!--Here we rename d3 v4 to d3version4, because the request and queue functions
+used further down reqiure d3 v4, whereas c3.js uses d3 v3, so that is the global
+d3 variable that is loaded -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>
+  <script> d3version4 = d3;  window.d3 = null  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+</head>
+
+
+<body>
+  <div id="chart">
+
+  </div>
+
+
+
+  <script>
+//count sets the number of teams
+var count = 21
+var Matchweeks = 18
+var requests = new Array()
+
+//This generates an array of get requests
+for (i=1; i<count; i++) {
+  requests[i] = d3version4.request("http://api.football-data.org/v1/competitions/445/leagueTable/?matchday=" + i)
+  .header("X-Auth-Token", "8482449714f3462da05ecdf6435cc71b")
+}
+
+var q = d3version4.queue();
+//This uses the d3 queue function to make 16 get requests for the data, and
+//then once all the data is retrieved (awaitAll), it excutes the callback function
+  for (i=1; i<count; i++) {
+  q.defer(requests[i].get);
+}
+  q.awaitAll(function(error, files) {
+  if (error) throw error;
+  //This converts the retrieved files to a JSON called Matchdays, which is
+  //all the previous weeks' results
+  var Matchdays = new Array()
+  for(i=0; i<Matchweeks-1; i++) {
+    Matchdays[i] = files[i].response
+    Matchdays[i] = JSON.parse(Matchdays[i])
+  }
+//This is used to select the array that contains a team's position for a particular
+//matchweek
+  function findTeamEntry(array, key, value) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return array[i];
+        }
+    }
+    return null;
+}
+
+// This makes the table in the required format for c3.js
+var PremierTable = new Array()
+n=1
+  for(i=0; i<count-1; i++) {
+    function findTeamPosition(Team, n) {
+    var obj = findTeamEntry(Matchdays[n].standing, 'teamName', Team)
+    return obj.position
+    }
+    PremierTable[i]= [Matchdays[0].standing[i].teamName, Matchdays[0].standing[i].position, findTeamPosition(Matchdays[0].standing[i].teamName, n), findTeamPosition(Matchdays[0].standing[i].teamName, n+1),findTeamPosition(Matchdays[0].standing[i].teamName, n+2),
+    findTeamPosition(Matchdays[0].standing[i].teamName, n+3),findTeamPosition(Matchdays[0].standing[i].teamName, n+4),findTeamPosition(Matchdays[0].standing[i].teamName, n+5),findTeamPosition(Matchdays[0].standing[i].teamName, n+6),findTeamPosition(Matchdays[0].standing[i].teamName, n+7),
+    findTeamPosition(Matchdays[0].standing[i].teamName, n+8),findTeamPosition(Matchdays[0].standing[i].teamName, n+9),findTeamPosition(Matchdays[0].standing[i].teamName, n+10),
+    findTeamPosition(Matchdays[0].standing[i].teamName, n+11),findTeamPosition(Matchdays[0].standing[i].teamName, n+12),findTeamPosition(Matchdays[0].standing[i].teamName, n+13),findTeamPosition(Matchdays[0].standing[i].teamName, n+14),findTeamPosition(Matchdays[0].standing[i].teamName, n+15),
+    findTeamPosition(Matchdays[0].standing[i].teamName, n+16)]
+}
+
+//This draws the chart I want
+function drawChart(PremierTable) {
+
+  var chart = c3.generate({
+    bindto:'#chart',
+      data: {
+          columns:
+            PremierTable
+            },
+          colors: {
+            "Manchester United FC" : '#ff0000',
+          },
+          tooltip: {
+            title: function (d) { return 'Matchweek ' + 1; },
+            grouped: false
+},
+
+            axis: {
+          y: {
+            inverted: true,
+            max: 20,
+            min: 1,
+            padding: {top:0, bottom: 0},
+            tick: {count:20},
+          },
+
+          x: {
+            // tick: {count:16 },
+            // min: 1,
+            // padding: {bottom:0},
+          }
+        },
+          })
+
+      }
+
+drawChart(PremierTable)
+})
+
+
+
+
+  </script>
+
+
+</body>
+</html>

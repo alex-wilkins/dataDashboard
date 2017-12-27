@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/uikit.min.css" />
+<script src="js/uikit.min.js"></script>
+<script src="js/uikit-icons.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<title>Premier League </title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <!-- This is the navbar -->
+  <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
+      <nav class="uk-navbar-container" uk-navbar style="position: relative; z-index: 980;">
+          <div class="uk-navbar-left">
+
+              <ul class="uk-navbar-nav">
+                  <li class="uk-active"><a href="#fixtures">Fixtures</a></li>
+                  <li class="uk-active"><a href="#LiveChart">Live Chart</a></li>
+                  <li class="uk-active"><a href="#">Poll</a></li>
+              </ul>
+
+          </div>
+      </nav>
+  </div>
+
+<!--This will be the week's fixture list  -->
+
+
+<div class="uk-grid-divider uk-child-width-expand@s" uk-grid>
+      <div class ="uk-align-center" id="fixtures">Premier League Fixtures</div>
+      <div class="uk-grid-divider" uk-grid></div>
+      <div>Fixture  1 </div>
+      <div class="uk-grid-divider" uk-grid></div>
+      <div>Fixture 2 </div>
+
+      </div>
+
+
+      <!--Week's Fixtures  -->
+      <div class="uk-text-center uk-child-width-expand uk-grid-small" uk-grid>
+          <div>
+              <div class="uk-card uk-card-default uk-card-body">
+                <p id="Fixture1"></p>
+              </div>
+          </div>
+          <div>
+              <div id="Fixture2" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+          <div>
+              <div id="Fixture3" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+          <div>
+              <div id="Fixture4" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+          <div>
+              <div id="Fixture5" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+        </div>
+
+        <div class="uk-text-center uk-child-width-expand uk-grid-small" uk-grid>
+          <div>
+              <div id="Fixture6" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+          <div>
+              <div id="Fixture7" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+          <div>
+              <div id="Fixture8" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+          <div>
+              <div id="Fixture9" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+          <div>
+              <div id="Fixture10" class="uk-card uk-card-default uk-card-body"></div>
+          </div>
+      </div>
+
+
+<script src=fixtures.js></script>
+
+
+</body>
+</html>
